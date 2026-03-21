@@ -208,6 +208,9 @@ GAMING_RSS_FEEDS: List[str] = [
     "https://feeds.arstechnica.com/arstechnica/gaming",
     "https://www.eurogamer.net/?format=rss",
     "https://rockpapershotgun.com/feed",
+    "https://www.videogameschronicle.com/feed/",
+    "https://www.polygon.com/rss/index.xml"
+    "https://www.nintendolife.com/feeds/latest"
 ]
 
 GAMEDEV_RSS_FEEDS: List[str] = [
@@ -226,6 +229,7 @@ AI_RSS_FEEDS: List[str] = [
     "https://deepmind.google/blog/rss/",
     "https://techcrunch.com/tag/artificial-intelligence/feed/",
     "https://venturebeat.com/category/ai/feed/",
+    "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
 ]
 
 TECH_RSS_FEEDS: List[str] = [
