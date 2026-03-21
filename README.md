@@ -66,7 +66,7 @@ This works for any **public** subreddit. Private or NSFW-gated subreddits are sk
 ### 1. Fork or clone this repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/daily-briefing.git
+git clone https://github.com/AndrallyS/daily-briefing.git
 cd daily-briefing
 ```
 
