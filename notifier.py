@@ -26,7 +26,20 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────
 
 def _escape_html(text: str) -> str:
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    """Escape text for use inside HTML tag content."""
+    return (text
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;"))
+
+def _escape_url(url: str) -> str:
+    """Escape URL for use inside href='...' attributes (single-quoted)."""
+    return (url
+        .replace("&", "&amp;")
+        .replace("'", "%27")
+        .replace('"', "%22")
+        .replace("<", "%3C")
+        .replace(">", "%3E"))
 
 
 def _build_telegram_message(briefing: Dict[str, List[Dict]], mode: str = "daily") -> str:
@@ -68,7 +81,7 @@ def _build_telegram_message(briefing: Dict[str, List[Dict]], mode: str = "daily"
             ai_sum        = _escape_html(item.get("ai_summary", ""))
             sent_icon     = {"positive": "\U0001f7e2", "negative": "\U0001f534", "neutral": "\u26aa"}.get(sentiment, "\u26aa")
 
-            link_url = ext_url if ext_url else permalink
+            link_url = _escape_url(ext_url if ext_url else permalink)
             line = f"\n<b>{i}.</b> {sent_icon} <a href='{link_url}'>{display_title}</a>"
 
             if translated:
@@ -79,7 +92,8 @@ def _build_telegram_message(briefing: Dict[str, List[Dict]], mode: str = "daily"
                 if score:
                     line += f" \u00b7 \u25b2{score:,} \u00b7 \U0001f4ac{comments:,}"
                 if permalink and permalink != ext_url:
-                    line += f" \u00b7 <a href='{permalink}'>ver discuss\u00e3o</a>"
+                    safe_permalink = _escape_url(permalink)
+                    line += f" \u00b7 <a href='{safe_permalink}'>ver discuss\u00e3o</a>"
             elif not is_reddit:
                 source = _escape_html(item.get("source", "RSS")[:30])
                 line += f"\n   \u2514 {source}"
