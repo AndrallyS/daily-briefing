@@ -1,0 +1,89 @@
+# .github/workflows/daily_briefing.yml
+# ──────────────────────────────────────────────────────────────
+# Daily Briefing Bot v3 — runs every day at 07:00 UTC (04:00 BRT)
+# Categories: Gaming · Game Dev · AI · Tech · Brasil
+# ──────────────────────────────────────────────────────────────
+
+name: Daily Briefing
+
+on:
+  schedule:
+    - cron: "0 7 * * *"    # 07:00 UTC = 04:00 BRT
+  workflow_dispatch:        # allow manual trigger from Actions tab
+
+permissions:
+  contents: write           # needed to commit docs/index.html and seen_ids.json
+
+jobs:
+  briefing:
+    name: Generate & Deliver Daily Briefing
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Restore SQLite history from cache (persists across runs)
+      - name: Restore SQLite cache
+        uses: actions/cache@v4
+        with:
+          path: briefing.db
+          key: briefing-db-${{ github.run_id }}
+          restore-keys: briefing-db-
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run daily briefing
+        env:
+          # ── Reddit — public API, no credentials needed ─────
+
+          # ── OpenAI ─────────────────────────────────────────
+          OPENAI_API_KEY:       ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL:         gpt-4o-mini
+
+          # ── Telegram (primary) ────────────────────────────
+          TELEGRAM_BOT_TOKEN:   ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:     ${{ secrets.TELEGRAM_CHAT_ID }}
+
+          # ── Discord (optional) ────────────────────────────
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          # ── Email (optional fallback) ─────────────────────
+          SMTP_USER:            ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD:        ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_RECIPIENT:      ${{ secrets.EMAIL_RECIPIENT }}
+
+          # ── Custom subreddits ─────────────────────────────
+          # Format: URLs, r/name, or names — comma-separated
+          # Example: "https://reddit.com/r/Eldenring, VALORANT, r/Steam"
+          EXTRA_GAMING_SUBREDDITS:  ${{ secrets.EXTRA_GAMING_SUBREDDITS }}
+          EXTRA_GAMEDEV_SUBREDDITS: ${{ secrets.EXTRA_GAMEDEV_SUBREDDITS }}
+          EXTRA_AI_SUBREDDITS:      ${{ secrets.EXTRA_AI_SUBREDDITS }}
+          EXTRA_TECH_SUBREDDITS:    ${{ secrets.EXTRA_TECH_SUBREDDITS }}
+          EXTRA_BR_SUBREDDITS:      ${{ secrets.EXTRA_BR_SUBREDDITS }}
+
+          # ── Tuning ────────────────────────────────────────
+          MAX_POSTS_IN_REPORT: "5"
+          LOOKBACK_HOURS:      "24"
+          MIN_SCORE:           "50"
+          TARGET_LANGUAGE:     "pt"
+
+        run: python main.py daily
+
+      # Commit static HTML + seen_ids.json back to repo
+      - name: Commit outputs
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html seen_ids.json 2>/dev/null || true
+          git diff --staged --quiet || \
+            git commit -m "briefing: $(date -u +'%Y-%m-%d')"
+          git push
