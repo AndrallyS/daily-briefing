@@ -63,7 +63,7 @@ feeds_disabled:
 # ──────────────────────────────────────────────────────────────
 # GERAL
 # ──────────────────────────────────────────────────────────────
-max_posts_per_category: 5   # quantos destaques por categoria (1–10)
-lookback_hours: 24           # busca posts das últimas N horas
-min_score: 50                # score mínimo de upvotes para incluir
+max_posts_per_category: 10   # quantos destaques por categoria (1–10)
+lookback_hours: 36           # busca posts das últimas N horas
+min_score: 45                # score mínimo de upvotes para incluir
 target_language: "pt"        # idioma dos resumos: pt, en, es, ja
