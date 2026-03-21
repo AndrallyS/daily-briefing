@@ -190,11 +190,11 @@ ENABLED_CATEGORIES: Set[str] = _enabled_categories()
 
 # Fetch tuning — settings.yml values override env vars
 MAX_POSTS_IN_REPORT: int = _setting("", "max_posts_per_category",
-    int(os.environ.get("MAX_POSTS_IN_REPORT", "5")))
+    int(os.environ.get("MAX_POSTS_IN_REPORT", "10")))
 LOOKBACK_HOURS: int = _setting("", "lookback_hours",
-    int(os.environ.get("LOOKBACK_HOURS", "24")))
+    int(os.environ.get("LOOKBACK_HOURS", "36")))
 MIN_SCORE: int = _setting("", "min_score",
-    int(os.environ.get("MIN_SCORE", "50")))
+    int(os.environ.get("MIN_SCORE", "45")))
 TARGET_LANGUAGE: str = _setting("", "target_language",
     os.environ.get("TARGET_LANGUAGE", "pt"))
 
@@ -253,13 +253,24 @@ HIGH_SIGNAL_KEYWORDS: List[str] = [
     # Gaming
     "leak", "leaked", "exclusive", "breaking", "announced", "confirmed",
     "release date", "trailer", "gameplay", "rumor", "official",
-    "early access", "launch", "update", "DLC", "sequel",
+    "early access", "launch", "update", "DLC", "sequel", "datamine", "datamined", "insider info", "dev update",
+    "roadmap", "season update", "hotfix", "live now",
+    "shadow drop", "preload", "review embargo",
+    "first look", "hands-on", "closed beta", "alpha test",
     # Gamedev / Tools
     "tutorial", "open source", "free asset", "plugin", "workflow",
-    "new version", "major update", "blender", "unity", "unreal",
+    "new version", "major update", "blender", "unity", "unreal", "asset pack", "devlog", "production ready", "pipeline",
+    "optimization", "performance boost", "shader",
+    "procedural", "addon", "toolkit",
+    "engine update", "render update", "workflow improvement",
+    "integration", "cross-platform",
     # AI
     "AI", "GPT", "model", "benchmark", "fine-tuned", "open source model",
-    "new release", "beats", "surpasses", "state of the art",
+    "new release", "beats", "surpasses", "state of the art", "multimodal", "inference", "token limit",
+    "context window", "fine tuning", "quantization",
+    "distillation", "agent", "autonomous",
+    "open weights", "alignment", "hallucination fix",
+    "training data", "benchmark score", "real world test", "Claude",
     # Tech / Security
     "vulnerability", "exploit", "breach", "zero-day", "patch",
     "acquisition", "layoffs", "lawsuit", "ban",
