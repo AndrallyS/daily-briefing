@@ -34,41 +34,63 @@ def _build_telegram_message(briefing: Dict[str, List[Dict]], mode: str = "daily"
     date = now.strftime("%d/%m/%Y %H:%M UTC")
 
     if mode == "alert":
-        lines = [f"🚨 <b>ALERTA — {date}</b>\n"]
+        lines = [f"\U0001f6a8 <b>ALERTA \u2014 {date}</b>\n"]
     else:
-        lines = [f"🗞️ <b>Daily Briefing — {date}</b>\n"]
+        lines = [f"\U0001f5de\ufe0f <b>Daily Briefing \u2014 {date}</b>\n"]
 
-    section_icons = {"gaming": "🎮", "tech": "⚡", "br": "🇧🇷"}
+    section_icons = {
+        "gaming":  "\U0001f3ae",
+        "gamedev": "\U0001f6e0",
+        "ai":      "\U0001f916",
+        "tech":    "\u26a1",
+        "br":      "\U0001f1e7\U0001f1f7",
+    }
 
     for cat, items in briefing.items():
         if not items:
             continue
-        icon = section_icons.get(cat, "📌")
-        lines.append(f"\n{icon} <b>{cat.upper()}</b>")
+        meta  = config.CATEGORY_META.get(cat, {})
+        label = meta.get("label", cat.upper())
+        icon  = section_icons.get(cat, "\U0001f4cc")
+        lines.append(f"\n{icon} <b>{label}</b>")
 
         for i, item in enumerate(items, 1):
-            title     = _escape_html(item.get("title_translated") or item.get("title", ""))
-            url       = item.get("url") or item.get("permalink", "")
-            score     = item.get("score", 0)
-            comments  = item.get("num_comments", 0)
-            sub       = item.get("subreddit", "")
-            sentiment = item.get("sentiment", "neutral")
-            ai_sum    = _escape_html(item.get("ai_summary", ""))
+            display_title = _escape_html(item.get("title_translated") or item.get("title", ""))
+            orig_title    = _escape_html(item.get("title", ""))
+            translated    = bool(item.get("title_translated"))
+            ext_url       = item.get("url", "")
+            permalink     = item.get("permalink", "")
+            is_reddit     = item.get("source") == "reddit"
+            score         = item.get("score", 0)
+            comments      = item.get("num_comments", 0)
+            sub           = item.get("subreddit", "")
+            sentiment     = item.get("sentiment", "neutral")
+            ai_sum        = _escape_html(item.get("ai_summary", ""))
+            sent_icon     = {"positive": "\U0001f7e2", "negative": "\U0001f534", "neutral": "\u26aa"}.get(sentiment, "\u26aa")
 
-            sent_icon = {"positive": "🟢", "negative": "🔴", "neutral": "⚪"}.get(sentiment, "⚪")
+            link_url = ext_url if ext_url else permalink
+            line = f"\n<b>{i}.</b> {sent_icon} <a href='{link_url}'>{display_title}</a>"
 
-            line = f"\n{i}. {sent_icon} <a href='{url}'>{title}</a>"
-            if sub:
-                line += f"\n   └ r/{sub}"
+            if translated:
+                line += f"\n   <i>({orig_title[:80]})</i>"
+
+            if is_reddit and sub:
+                line += f"\n   \u2514 r/{sub}"
                 if score:
-                    line += f" · ▲{score:,} · 💬{comments:,}"
+                    line += f" \u00b7 \u25b2{score:,} \u00b7 \U0001f4ac{comments:,}"
+                if permalink and permalink != ext_url:
+                    line += f" \u00b7 <a href='{permalink}'>ver discuss\u00e3o</a>"
+            elif not is_reddit:
+                source = _escape_html(item.get("source", "RSS")[:30])
+                line += f"\n   \u2514 {source}"
+
             if ai_sum:
                 line += f"\n   <i>{ai_sum}</i>"
+
             lines.append(line)
 
-    lines.append(f"\n\n<a href='https://github.com'>Ver briefing completo →</a>")
+    lines.append("\n\n<a href='https://github.com/AndrallyS/daily-briefing'>\U0001f4c4 Ver briefing completo</a>")
     return "\n".join(lines)
-
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=6))
 def send_telegram(briefing: Dict[str, List[Dict]], mode: str = "daily") -> bool:
