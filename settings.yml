@@ -1,0 +1,69 @@
+# ═══════════════════════════════════════════════════════════════
+# settings.yml — Personalize seu briefing aqui
+# Não é necessário mexer em nenhum arquivo .py
+# ═══════════════════════════════════════════════════════════════
+
+# ──────────────────────────────────────────────────────────────
+# CATEGORIAS — habilite ou desabilite seções inteiras
+# ──────────────────────────────────────────────────────────────
+categories:
+  gaming:  true    # 🎮 Gaming — news, leaks, releases
+  gamedev: true    # 🛠️  Game Dev — Unity, Unreal, Godot, indie dev
+  ai:      true    # 🤖 Inteligência Artificial — LLMs, ML, generative AI
+  tech:    true    # ⚡ Tech & Segurança — hardware, cybersecurity
+  br:      true    # 🇧🇷 Brasil — comunidades brasileiras
+
+# ──────────────────────────────────────────────────────────────
+# SUBREDDITS REMOVIDOS — cole aqui os que não quer ver
+# O bot ignora esses mesmo que estejam na lista padrão
+# ──────────────────────────────────────────────────────────────
+subreddits_disabled:
+  # Exemplos (remova o # para ativar):
+  # - blender
+  # - blenderhelp
+  # - learnblender
+  # - Unity3D
+  # - unrealengine
+  # - MachineLearning
+
+# ──────────────────────────────────────────────────────────────
+# SUBREDDITS EXTRAS — adicione os seus sem tocar no config.py
+# Formato aceito: URL completa, r/nome, ou só o nome
+# ──────────────────────────────────────────────────────────────
+subreddits_extra:
+  gaming:
+    # - https://www.reddit.com/r/Eldenring
+    # - VALORANT
+    # - r/SteamDeals
+
+  gamedev:
+    # - roguelikedev
+    # - r/pixelart
+
+  ai:
+    # - r/StableDiffusion
+    # - LocalLLaMA
+
+  tech:
+    # - r/selfhosted
+    # - homelab
+
+  br:
+    # - hardware_br
+    # - brdev
+
+# ──────────────────────────────────────────────────────────────
+# FEEDS RSS DESATIVADOS — cole a URL do feed que quer remover
+# ──────────────────────────────────────────────────────────────
+feeds_disabled:
+  # Exemplos:
+  # - https://www.blendernation.com/feed/
+  # - https://blogs.unity.com/feed
+
+# ──────────────────────────────────────────────────────────────
+# GERAL
+# ──────────────────────────────────────────────────────────────
+max_posts_per_category: 5   # quantos destaques por categoria (1–10)
+lookback_hours: 24           # busca posts das últimas N horas
+min_score: 50                # score mínimo de upvotes para incluir
+target_language: "pt"        # idioma dos resumos: pt, en, es, ja

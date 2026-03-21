@@ -1,0 +1,37 @@
+# Credentials — NEVER commit these
+.env
+.env.*
+*.env
+secrets.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.venv/
+venv/
+env/
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# ── COMMITTED intentionally ──────────────────────────────────
+# docs/index.html    → briefing website (GitHub Pages)
+# seen_ids.json      → deduplication cache
+# briefing.db        → NOT committed (handled by Actions cache)
