@@ -275,7 +275,7 @@ def render_html(briefing: Dict[str, List[Dict]]) -> str:
   <div style="text-align:center;padding:20px 0 4px;border-top:1px solid #e2e8f0;margin-top:8px;">
     <p style="font-size:11px;color:#94a3b8;line-height:2;">
       Gerado por <strong>Daily Briefing Bot v3</strong> · 
-      <a href="https://github.com/YOUR_USERNAME/daily-briefing"
+      <a href="https://github.com/AndrallyS/daily-briefing"
         style="color:#94a3b8;">GitHub</a><br/>
       Reddit API · RSS · GPT-4o-mini · VADER Sentiment · GitHub Actions
     </p>
