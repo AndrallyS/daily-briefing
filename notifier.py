@@ -106,6 +106,31 @@ def _build_telegram_message(briefing: Dict[str, List[Dict]], mode: str = "daily"
     lines.append("\n\n<a href='https://github.com/AndrallyS/daily-briefing'>\U0001f4c4 Ver briefing completo</a>")
     return "\n".join(lines)
 
+def _safe_split(text: str, limit: int = 4000) -> list:
+    """Split a message at newline boundaries so HTML tags are never cut mid-way."""
+    if len(text) <= limit:
+        return [text]
+
+    chunks = []
+    current = ""
+    for line in text.split("\n"):
+        candidate = current + ("\n" if current else "") + line
+        if len(candidate) <= limit:
+            current = candidate
+        else:
+            if current:
+                chunks.append(current)
+            # If a single line is longer than limit, truncate it cleanly
+            if len(line) > limit:
+                chunks.append(line[:limit - 3] + "...")
+                current = ""
+            else:
+                current = line
+    if current:
+        chunks.append(current)
+    return chunks
+
+
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=6))
 def send_telegram(briefing: Dict[str, List[Dict]], mode: str = "daily") -> bool:
     if not config.SEND_TELEGRAM:
@@ -114,8 +139,8 @@ def send_telegram(briefing: Dict[str, List[Dict]], mode: str = "daily") -> bool:
 
     text = _build_telegram_message(briefing, mode)
 
-    # Telegram has a 4096 char limit per message — split if needed
-    chunks = [text[i:i+4000] for i in range(0, len(text), 4000)]
+    # Split safely on newline boundaries — never mid-tag
+    chunks = _safe_split(text, limit=4000)
 
     for chunk in chunks:
         resp = requests.post(
@@ -132,7 +157,7 @@ def send_telegram(briefing: Dict[str, List[Dict]], mode: str = "daily") -> bool:
             logger.error("Telegram error: %s — %s", resp.status_code, resp.text[:200])
             return False
 
-    logger.info("✅ Telegram message sent (%d chars)", len(text))
+    logger.info("✅ Telegram message sent (%d chars, %d chunk(s))", len(text), len(chunks))
     return True
 
 
