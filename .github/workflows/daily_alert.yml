@@ -1,0 +1,55 @@
+# .github/workflows/daily_alert.yml
+# ──────────────────────────────────────────────────────────────
+# Daily Alert Scan — runs once at 14:00 UTC (11:00 BRT).
+# Silent if no critical breaking news is found.
+# Only fires a notification when: score ≥ ALERT_MIN_SCORE
+# AND post contains one of the CRITICAL_ALERT_KEYWORDS.
+#
+# GitHub Actions minutes: ~2 min/day → ~60 min/month.
+# Combined with daily_briefing (~60 min) = ~120 min/month total.
+# Free tier limit: 2,000 min/month (public repo = unlimited).
+# ──────────────────────────────────────────────────────────────
+
+name: Daily Alert Scan
+
+on:
+  schedule:
+    - cron: "0 14 * * *"   # 14:00 UTC = 11:00 BRT
+  workflow_dispatch:
+
+jobs:
+  alert:
+    name: Scan for Critical Breaking News
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run alert scan
+        env:
+          # Reddit — public API, no credentials needed
+          OPENAI_API_KEY:           ${{ secrets.OPENAI_API_KEY }}
+          TELEGRAM_BOT_TOKEN:       ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:         ${{ secrets.TELEGRAM_CHAT_ID }}
+          DISCORD_WEBHOOK_URL:      ${{ secrets.DISCORD_WEBHOOK_URL }}
+          EXTRA_GAMING_SUBREDDITS:  ${{ secrets.EXTRA_GAMING_SUBREDDITS }}
+          EXTRA_GAMEDEV_SUBREDDITS: ${{ secrets.EXTRA_GAMEDEV_SUBREDDITS }}
+          EXTRA_AI_SUBREDDITS:      ${{ secrets.EXTRA_AI_SUBREDDITS }}
+          EXTRA_TECH_SUBREDDITS:    ${{ secrets.EXTRA_TECH_SUBREDDITS }}
+
+          # Thresholds — adjust to taste
+          ALERT_MIN_SCORE:      "15000"   # upvotes needed to fire
+          ALERT_LOOKBACK_HOURS: "12"      # look back 12 hours
+
+        run: python main.py alert
