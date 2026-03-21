@@ -19,6 +19,7 @@
     "https://arstechnica.com/security/2026/03/widely-used-trivy-scanner-compromised-in-ongoing-supply-chain-attack/",
     "https://huggingface.co/blog/ibm-granite/granite-libraries",
     "https://huggingface.co/blog/nvidia/domain-specific-embedding-finetune",
+    "https://kotaku.com/?p=2000680686",
     "https://techcrunch.com/?p=3088174",
     "https://techcrunch.com/?p=3104350",
     "https://techcrunch.com/?p=3104367",
@@ -27,9 +28,11 @@
     "https://techcrunch.com/?p=3104615",
     "https://techcrunch.com/?p=3104644",
     "https://techcrunch.com/?post_type=tc_video&p=3104584",
+    "https://thehackernews.com/2026/03/cisa-flags-apple-craft-cms-laravel-bugs.html",
     "https://thehackernews.com/2026/03/doj-disrupts-3-million-device-iot.html",
     "https://thehackernews.com/2026/03/google-adds-24-hour-wait-for-unverified.html",
     "https://thehackernews.com/2026/03/magento-polyshell-flaw-enables.html",
+    "https://thehackernews.com/2026/03/oracle-patches-critical-cve-2026-21992.html",
     "https://thehackernews.com/2026/03/the-importance-of-behavioral-analytics.html",
     "https://thehackernews.com/2026/03/trivy-security-scanner-github-actions.html",
     "https://thehackernews.com/2026/03/trivy-supply-chain-attack-triggers-self.html",
@@ -41,6 +44,8 @@
     "https://www.eurogamer.net/more-subnautica-2-legal-trouble-brewing",
     "https://www.eurogamer.net/psychonauts-and-keeper-developers-game-pass-party-game-kiln-gets-a-release-date-and-its-coming-really-very-soon",
     "https://www.eurogamer.net/slay-the-spire-2-first-patch",
+    "https://www.eurogamer.net/the-best-gba-games-you-can-play-on-switch-and-five-we-hope-show-up-soon",
+    "https://www.eurogamer.net/what-weve-been-playing-supermarket-sweep",
     "https://www.gamedeveloper.com/business/crimson-desert-has-topped-2m-sales-within-a-day",
     "https://www.gamedeveloper.com/business/ioi-partners-disowns-mindseye-krafton-collabs-with-arms-dealer-and-more-cuts-at-ubisoft-patch-notes-44",
     "https://www.gamedeveloper.com/business/savvy-games-group-agreed-to-buy-moonton-games-for-6-billion",
@@ -52,12 +57,17 @@
     "https://www.rockpapershotgun.com/steamos-update-preview-brings-initial-support-for-the-steam-machine-steam-deck-features",
     "https://www.rockpapershotgun.com/subnautica-2s-early-access-release-date-was-self-servingly-leaked-by-krafton-further-damaging-the-game-claim-lawyers-for-reinstated-unknown-worlds-ceo",
     "https://www.rockpapershotgun.com/us-regulator-wont-follow-europes-lead-and-stick-higher-age-ratings-on-games-with-loot-boxes-and-daily-quests-since-it-might-confuse-parents",
+    "https://www.rockpapershotgun.com/what-are-we-all-playing-this-weekend-374",
     "https://www.theverge.com/898580/tcls-playcube-projector-is-more-fun-than-a-rubiks-cube",
+    "https://www.theverge.com/?p=895435",
+    "https://www.theverge.com/?p=897551",
     "https://www.theverge.com/?p=897834",
     "https://www.theverge.com/?p=898082",
+    "https://www.theverge.com/?p=898265",
     "https://www.theverge.com/?p=898283",
     "https://www.theverge.com/?p=898402",
-    "https://www.videogameschronicle.com/?p=233831"
+    "https://www.videogameschronicle.com/?p=233831",
+    "https://www.videogameschronicle.com/?p=233869"
   ],
-  "count": 58
+  "count": 68
 }
